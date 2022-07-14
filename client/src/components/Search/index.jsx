@@ -20,7 +20,7 @@ const Input = styled.input`
   border: none;
   border: 1px solid #93e1d8;
   border-radius: 4px;
-
+  font-size: 16px;
   &:focus {
     border: 2px solid #93e1d8;
   }

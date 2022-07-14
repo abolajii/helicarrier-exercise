@@ -1,4 +1,4 @@
-# Simple Application With Search And Filter
+# Simple Application With Search And Filter Functionality
 
 This project was bulit with React JS (client-side) and GraphQL (server-side)
 

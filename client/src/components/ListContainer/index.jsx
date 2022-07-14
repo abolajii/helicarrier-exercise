@@ -96,12 +96,21 @@ const ListContainer = () => {
     if (loading) {
       setGroupData([]);
     } else if (!debounce || reload) {
-      const groupData = data?.getAllUsers.reduce((group, product) => {
+      //sort users by created_at
+      const sortedUsers = [...data?.getAllUsers].sort((a, b) => {
+        return a.created_at.localeCompare(b.created_at, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
+      });
+      //group sorted users
+      const groupData = sortedUsers.reduce((group, product) => {
         const { created_at } = product;
         group[created_at] = group[created_at] ?? [];
         group[created_at].push(product);
         return group;
       }, {});
+
       setGroupData(groupData);
     }
   }, [loading, debounce, setGroupData, data?.getAllUsers, reload]);
@@ -113,7 +122,15 @@ const ListContainer = () => {
   //getalluser by searching then group searchData
   useEffect(() => {
     if (searchData.data?.getAllUser) {
-      const groupData = searchData.data?.getAllUser.reduce((group, product) => {
+      //sort users by created_at
+      const sortedUsers = [...searchData.data?.getAllUser].sort((a, b) => {
+        return a.created_at.localeCompare(b.created_at, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
+      });
+
+      const groupData = sortedUsers.reduce((group, product) => {
         const { created_at } = product;
         group[created_at] = group[created_at] ?? [];
         group[created_at].push(product);
@@ -121,6 +138,7 @@ const ListContainer = () => {
       }, {});
       setGroupData(groupData);
 
+      //if there are no search results
       searchData.data?.getAllUser.length === 0 && setNoResult(true);
     }
   }, [searchData.data?.getAllUser, setGroupData]);

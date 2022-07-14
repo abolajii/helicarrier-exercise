@@ -24,6 +24,13 @@ button {
   cursor:pointer;
   border-radius:6px;
 }
+
+@media screen and (max-width: 767px){
+	input{
+		font-size:16px;
+		
+	}
+}
 `;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

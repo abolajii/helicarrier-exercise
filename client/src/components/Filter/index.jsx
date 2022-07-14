@@ -71,20 +71,26 @@ const Filter = () => {
   //filter users and group users
   useEffect(() => {
     if (filterData.data?.getFilterResults) {
-      const groupData = filterData.data?.getFilterResults.reduce(
-        (group, product) => {
-          const { created_at } = product;
-          group[created_at] = group[created_at] ?? [];
-          group[created_at].push(product);
-          return group;
-        },
-        {}
+      //sort users by created_at
+      const sortedUsers = [...filterData.data?.getFilterResults].sort(
+        (a, b) => {
+          return a.created_at.localeCompare(b.created_at, undefined, {
+            numeric: true,
+            sensitivity: "base",
+          });
+        }
       );
+      const groupData = sortedUsers.reduce((group, product) => {
+        const { created_at } = product;
+        group[created_at] = group[created_at] ?? [];
+        group[created_at].push(product);
+        return group;
+      }, {});
       setGroupData(groupData);
     }
   }, [filterData.data?.getFilterResults, setGroupData]);
 
-  //if search is empty setActive to default else setActive to 0
+  //if search query is empty setActive filter tab to default else setActive to 0
   useEffect(() => {
     if (query) {
       setActive(0);
