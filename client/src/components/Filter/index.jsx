@@ -38,7 +38,7 @@ const Button = styled.button`
 
 const Filter = () => {
   const { setGroupData, setReload, query } = useContext(QueryContext);
-  const [active, setActive] = useState(5);
+  const [active, setActive] = useState(1);
 
   const GET_FILTER_RESULTS = gql`
     query getFilterResults($status: String, $gender: String) {
@@ -64,10 +64,11 @@ const Filter = () => {
   ];
 
   const [filterValue, setFilterValue] = useState("");
+
   const filterData = useQuery(GET_FILTER_RESULTS, {
     variables: { status: filterValue, gender: filterValue },
   });
-
+  //filter users and group users
   useEffect(() => {
     if (filterData.data?.getFilterResults) {
       const groupData = filterData.data?.getFilterResults.reduce(
@@ -83,6 +84,7 @@ const Filter = () => {
     }
   }, [filterData.data?.getFilterResults, setGroupData]);
 
+  //if search is empty setActive to default else setActive to 0
   useEffect(() => {
     if (query) {
       setActive(0);

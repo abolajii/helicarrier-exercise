@@ -27,7 +27,7 @@ const Input = styled.input`
 `;
 
 const Search = () => {
-  const { query, groupData, setQuery } = useContext(QueryContext);
+  const { query, setQuery } = useContext(QueryContext);
 
   const renderSearch = () => {
     return (

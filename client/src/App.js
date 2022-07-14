@@ -6,7 +6,6 @@ import { mobileResponsiveness } from "./responsive/responsive";
 
 const Container = styled.div`
   padding: 1rem;
-  // background: green;
   margin: auto;
 
   width: 900px;

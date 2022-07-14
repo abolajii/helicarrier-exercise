@@ -58,6 +58,7 @@ const ListContainer = () => {
   const [noResult, setNoResult] = useState(false);
   const debounce = useDebounce(query);
 
+  //all users request
   const GET_USERS = gql`
     query {
       getAllUsers {
@@ -72,7 +73,7 @@ const ListContainer = () => {
       }
     }
   `;
-
+  //search query request
   const GET_SEARCH_QUERY = gql`
     query getAllUser($name: String!) {
       getAllUser(name: $name) {
@@ -88,13 +89,14 @@ const ListContainer = () => {
     }
   `;
 
-  const { loading, data } = useQuery(GET_USERS);
+  const { loading, error, data } = useQuery(GET_USERS);
 
+  //getallusers from graphql then group all users
   useEffect(() => {
     if (loading) {
       setGroupData([]);
     } else if (!debounce || reload) {
-      const groupData = data.getAllUsers.reduce((group, product) => {
+      const groupData = data?.getAllUsers.reduce((group, product) => {
         const { created_at } = product;
         group[created_at] = group[created_at] ?? [];
         group[created_at].push(product);
@@ -108,6 +110,7 @@ const ListContainer = () => {
     variables: { name: debounce },
   });
 
+  //getalluser by searching then group searchData
   useEffect(() => {
     if (searchData.data?.getAllUser) {
       const groupData = searchData.data?.getAllUser.reduce((group, product) => {
@@ -124,6 +127,8 @@ const ListContainer = () => {
 
   if (loading) {
     return <p>Loading...</p>;
+  } else if (!loading && error) {
+    return <p>Error loading data from server, Please try again</p>;
   } else {
     return (
       <Container>
